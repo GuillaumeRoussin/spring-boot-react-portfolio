@@ -16,6 +16,13 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
+        if (password == null) {
+            // Return false to indicate password is invalid if null
+            context.buildConstraintViolationWithTemplate("The password cannot be null.")
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
+            return false;
+        }
         PasswordValidator validator = new PasswordValidator(Arrays.asList(
                 // at least 8 characters
                 new LengthRule(8, 30),
@@ -33,9 +40,9 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
                 new CharacterRule(EnglishCharacterData.Special, 1),
 
                 // no whitespace
-                new WhitespaceRule(),
+                new WhitespaceRule()
 
-                new HaveIBeenPwnedRule("spring-portfolio")
+                //new HaveIBeenPwnedRule("spring-portfolio")
 
         ));
         RuleResult result = validator.validate(new PasswordData(password));
