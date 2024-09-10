@@ -1,6 +1,7 @@
 package com.springportfolio.core.apis.user;
 
 import com.springportfolio.core.entity.User;
+import com.springportfolio.core.responses.user.DefaultUserResponse;
 import com.springportfolio.core.services.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,17 +22,17 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> authenticatedUser() {
+    public ResponseEntity<DefaultUserResponse> authenticatedUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User currentUser = (User) authentication.getPrincipal();
-        return ResponseEntity.ok(currentUser);
+        return ResponseEntity.ok(DefaultUserResponse.toDefaultUserResponse(currentUser));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> allUsers() {
-        List<User> users = userService.allUsers();
+    @GetMapping()
+    public ResponseEntity<List<DefaultUserResponse>> allUsers() {
+        List<DefaultUserResponse> users = userService.allUsers();
 
         return ResponseEntity.ok(users);
     }
