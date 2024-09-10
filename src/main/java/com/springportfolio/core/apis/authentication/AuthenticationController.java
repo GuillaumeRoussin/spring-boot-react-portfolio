@@ -4,6 +4,7 @@ import com.springportfolio.core.dtos.user.LoginUserDto;
 import com.springportfolio.core.dtos.user.RegisterUserDto;
 import com.springportfolio.core.entity.User;
 import com.springportfolio.core.responses.LoginResponse;
+import com.springportfolio.core.responses.user.DefaultUserResponse;
 import com.springportfolio.core.services.authentication.AuthenticationService;
 import com.springportfolio.core.services.authentication.JwtService;
 import jakarta.validation.Valid;
@@ -26,8 +27,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<DefaultUserResponse> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
+        DefaultUserResponse registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }

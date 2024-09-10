@@ -6,12 +6,14 @@ import com.springportfolio.core.entity.Role;
 import com.springportfolio.core.entity.User;
 import com.springportfolio.core.repository.RoleRepositoryInterface;
 import com.springportfolio.core.repository.UserRepositoryInterface;
+import com.springportfolio.core.responses.user.DefaultUserResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,9 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepositoryInterface userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final AuthenticationManager authenticationManager;
     private final RoleRepositoryInterface roleRepository;
 
@@ -31,11 +35,19 @@ public class AuthenticationService {
         this.roleRepository = roleRepository;
     }
 
-    public User signup(RegisterUserDto input) {
+    public DefaultUserResponse signup(RegisterUserDto input) {
         Optional<Role> roleUser = roleRepository.findByName("ROLE_USER");
-        User user = User.builder().firstName(input.getFirstName()).lastName(input.getLastName()).email(input.getEmail()).roles(List.of(roleUser.orElseThrow())).password(passwordEncoder.encode(input.getPassword())).build();
+        User user = User.builder()
+                .firstName(input.getFirstName())
+                .lastName(input.getLastName())
+                .email(input.getEmail())
+                .roles(List.of(roleUser.orElseThrow()))
+                .password(passwordEncoder.encode(input.getPassword()))
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build();
 
-        return userRepository.save(user);
+        return DefaultUserResponse.toDefaultUserResponse(userRepository.save(user));
     }
 
     public User authenticate(LoginUserDto input) {
