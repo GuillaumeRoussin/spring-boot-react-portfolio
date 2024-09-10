@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 public class DefaultUserResponse {
 
-    private Integer id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
