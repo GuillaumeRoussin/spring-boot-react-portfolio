@@ -1,6 +1,6 @@
 package com.springportfolio.core.configs;
 
-import com.springportfolio.core.repository.UserRepositoryInterface;
+import com.springportfolio.core.services.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,21 +8,19 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class ApplicationConfiguration {
-    private final UserRepositoryInterface userRepository;
+    private final UserService userService;
 
-    public ApplicationConfiguration(UserRepositoryInterface userRepository) {
-        this.userRepository = userRepository;
+    public ApplicationConfiguration(UserService userService) {
+        this.userService = userService;
     }
 
     @Bean
     UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userService;
     }
 
     @Bean

@@ -2,13 +2,13 @@ package com.springportfolio.core.apis.authentication;
 
 import com.springportfolio.core.dtos.user.LoginUserDto;
 import com.springportfolio.core.dtos.user.RegisterUserDto;
-import com.springportfolio.core.entity.User;
 import com.springportfolio.core.responses.LoginResponse;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
 import com.springportfolio.core.services.authentication.AuthenticationService;
 import com.springportfolio.core.services.authentication.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+        UserDetails authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 

@@ -1,12 +1,14 @@
 package com.springportfolio.core.apis.user;
 
 import com.springportfolio.core.entity.User;
+import com.springportfolio.core.repository.UserRepositoryInterface;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
 import com.springportfolio.core.services.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,11 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final UserRepositoryInterface userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepositoryInterface userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -28,7 +32,8 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        User currentUser = (User) authentication.getPrincipal();
+        UserDetails currentUserDetails = (UserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.findByEmail(currentUserDetails.getUsername()).orElseThrow();
         return ResponseEntity.ok(DefaultUserResponse.toDefaultUserResponse(currentUser));
     }
 

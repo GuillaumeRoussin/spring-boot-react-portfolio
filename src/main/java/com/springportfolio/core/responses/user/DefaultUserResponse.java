@@ -3,9 +3,7 @@ package com.springportfolio.core.responses.user;
 import com.springportfolio.core.entity.User;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
 import java.util.Date;
 
 @Data
@@ -18,11 +16,6 @@ public class DefaultUserResponse {
     private String email;
     private Date createdAt;
     private Date updatedAt;
-    private boolean enabled;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private Collection<? extends GrantedAuthority> authorities;
 
     public static DefaultUserResponse toDefaultUserResponse(User user) {
         return DefaultUserResponse.builder()
@@ -32,11 +25,6 @@ public class DefaultUserResponse {
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
-                .enabled(user.isEnabled())
-                .accountNonExpired(user.isAccountNonExpired())
-                .accountNonLocked(user.isAccountNonLocked())
-                .credentialsNonExpired(user.isCredentialsNonExpired())
-                .authorities(user.getAuthorities())
                 .build();
     }
 }

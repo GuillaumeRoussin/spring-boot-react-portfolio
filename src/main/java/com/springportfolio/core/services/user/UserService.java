@@ -3,7 +3,6 @@ package com.springportfolio.core.services.user;
 import com.springportfolio.core.entity.Privilege;
 import com.springportfolio.core.entity.Role;
 import com.springportfolio.core.entity.User;
-import com.springportfolio.core.repository.RoleRepositoryInterface;
 import com.springportfolio.core.repository.UserRepositoryInterface;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
 import jakarta.transaction.Transactional;
@@ -20,11 +19,9 @@ import java.util.*;
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserRepositoryInterface userRepository;
-    private final RoleRepositoryInterface roleRepository;
 
-    public UserService(UserRepositoryInterface userRepository, RoleRepositoryInterface roleRepository) {
+    public UserService(UserRepositoryInterface userRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     public List<DefaultUserResponse> allUsers() {
@@ -66,16 +63,18 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
-
-        Optional<User> user = userRepository.findByEmail(email);
-        Optional<Role> role = roleRepository.findByName("ROLE_USER");
-        return user.map(value -> new org.springframework.security.core.userdetails.User(
-                value.getEmail(), value.getPassword(), true, true, true,
-                true, getAuthorities(value.getRoles()))).orElseGet(() -> new org.springframework.security.core.userdetails.User(
-                " ", " ", true, true, true, true,
-                getAuthorities(List.of(role.orElseThrow()))));
-
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        System.out.println("wheregere");
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                true,
+                true,
+                true,
+                true,
+                getAuthorities(user.getRoles())
+        );
     }
 }
