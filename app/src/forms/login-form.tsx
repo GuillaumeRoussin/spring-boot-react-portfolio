@@ -1,6 +1,5 @@
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
-import {z} from "zod"
 import {Button} from "@/components/ui/button"
 import {
     Form,
@@ -12,23 +11,21 @@ import {
 } from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-
-const formSchema = z.object({
-    username: z.string().email({message: "Username must be a valid email"}),
-    password: z.string().min(2)
-})
+import {AuthenticationInput, AuthenticationSchemaInput, useAuthenticationLogin} from "@/api/authentication";
 
 export function LoginForm() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const authLogin = useAuthenticationLogin();
+    const form = useForm<AuthenticationInput>({
+        resolver: zodResolver(AuthenticationSchemaInput),
         defaultValues: {
-            username: "",
+            email: "",
             password: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    function onSubmit(values: AuthenticationInput) {
+        const res = authLogin.mutate(values);
+        console.log(res);
     }
 
     return (
@@ -45,7 +42,7 @@ export function LoginForm() {
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             <FormField
                                 control={form.control}
-                                name="username"
+                                name="email"
                                 render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Username</FormLabel>

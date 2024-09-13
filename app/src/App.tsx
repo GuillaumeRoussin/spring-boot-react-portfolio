@@ -1,4 +1,4 @@
-import {LoginForm} from "@/forms/LoginForm.tsx";
+import {LoginForm} from "@/forms/login-form";
 
 function App() {
 
