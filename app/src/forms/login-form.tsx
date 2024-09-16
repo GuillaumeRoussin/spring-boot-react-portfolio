@@ -12,9 +12,12 @@ import {
 import {Input} from "@/components/ui/input"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {AuthenticationInput, AuthenticationSchemaInput, useAuthenticationLogin} from "@/api/authentication";
+import {useNavigate} from "react-router-dom";
+import {ModeToggle} from "@/components/mode-toggle";
 
 export function LoginForm() {
     const authLogin = useAuthenticationLogin();
+    const navigate = useNavigate();
     const form = useForm<AuthenticationInput>({
         resolver: zodResolver(AuthenticationSchemaInput),
         defaultValues: {
@@ -24,15 +27,21 @@ export function LoginForm() {
     })
 
     function onSubmit(values: AuthenticationInput) {
-        const res = authLogin.mutate(values);
-        console.log(res);
+        authLogin.mutate(values, {
+            onSuccess: (_) => {
+                navigate("/dashboard");
+            }
+        });
     }
 
     return (
         <div className="flex items-center justify-center h-screen">
             <Card className="w-full max-w-sm">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Login</CardTitle>
+                    <div className="flex items-center justify-between">
+                        <CardTitle className="text-2xl">Login</CardTitle>
+                        <ModeToggle/>
+                    </div>
                     <CardDescription>
                         Enter your email below to login to your account.
                     </CardDescription>
