@@ -29,7 +29,7 @@ export function SigninForm() {
     function onSubmit(values: SigninInput) {
         authSignin.mutate(values, {
             onSuccess: (_) => {
-                navigate("/dashboard");
+                navigate("/");
             }
         });
     }

@@ -5,7 +5,7 @@ interface PrivateRouteProps {
     redirectPath?: string;
 }
 
-const PrivateRoute = ({isAuthenticated, redirectPath = '/'}: PrivateRouteProps) => {
+const PrivateRoute = ({isAuthenticated, redirectPath = '/signin'}: PrivateRouteProps) => {
     if (!isAuthenticated) {
         return <Navigate to={redirectPath} replace/>;
     }

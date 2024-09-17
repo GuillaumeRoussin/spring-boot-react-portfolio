@@ -1,9 +1,9 @@
 package com.springportfolio.core.repository.user;
 
-import com.springportfolio.core.entity.user.Profil;
+import com.springportfolio.core.entity.user.Profile;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfilRepositoryInterface extends CrudRepository<Profil, Long> {
+public interface ProfileRepositoryInterface extends CrudRepository<Profile, Long> {
 }

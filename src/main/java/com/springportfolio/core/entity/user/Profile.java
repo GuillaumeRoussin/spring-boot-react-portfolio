@@ -17,7 +17,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "profil")
-public class Profil {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
