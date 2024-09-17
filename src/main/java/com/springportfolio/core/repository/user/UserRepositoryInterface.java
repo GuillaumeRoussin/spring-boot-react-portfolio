@@ -1,6 +1,6 @@
-package com.springportfolio.core.repository;
+package com.springportfolio.core.repository.user;
 
-import com.springportfolio.core.entity.User;
+import com.springportfolio.core.entity.user.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

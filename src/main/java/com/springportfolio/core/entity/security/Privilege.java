@@ -1,4 +1,4 @@
-package com.springportfolio.core.entity;
+package com.springportfolio.core.entity.security;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

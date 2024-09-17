@@ -1,9 +1,9 @@
 package com.springportfolio.core.services.user;
 
-import com.springportfolio.core.entity.Privilege;
-import com.springportfolio.core.entity.Role;
-import com.springportfolio.core.entity.User;
-import com.springportfolio.core.repository.UserRepositoryInterface;
+import com.springportfolio.core.entity.security.Privilege;
+import com.springportfolio.core.entity.security.Role;
+import com.springportfolio.core.entity.user.User;
+import com.springportfolio.core.repository.user.UserRepositoryInterface;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.GrantedAuthority;

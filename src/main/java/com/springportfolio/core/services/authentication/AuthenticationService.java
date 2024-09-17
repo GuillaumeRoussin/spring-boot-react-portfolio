@@ -2,10 +2,10 @@ package com.springportfolio.core.services.authentication;
 
 import com.springportfolio.core.dtos.user.RegisterUserDto;
 import com.springportfolio.core.dtos.user.LoginUserDto;
-import com.springportfolio.core.entity.Role;
-import com.springportfolio.core.entity.User;
-import com.springportfolio.core.repository.RoleRepositoryInterface;
-import com.springportfolio.core.repository.UserRepositoryInterface;
+import com.springportfolio.core.entity.security.Role;
+import com.springportfolio.core.entity.user.User;
+import com.springportfolio.core.repository.security.RoleRepositoryInterface;
+import com.springportfolio.core.repository.user.UserRepositoryInterface;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
 import com.springportfolio.core.services.user.UserService;
 import jakarta.transaction.Transactional;

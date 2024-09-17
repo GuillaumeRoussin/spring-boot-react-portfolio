@@ -1,6 +1,6 @@
-package com.springportfolio.core.repository;
+package com.springportfolio.core.repository.security;
 
-import com.springportfolio.core.entity.Privilege;
+import com.springportfolio.core.entity.security.Privilege;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

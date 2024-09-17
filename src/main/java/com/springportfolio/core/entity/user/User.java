@@ -1,5 +1,6 @@
-package com.springportfolio.core.entity;
+package com.springportfolio.core.entity.user;
 
+import com.springportfolio.core.entity.security.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

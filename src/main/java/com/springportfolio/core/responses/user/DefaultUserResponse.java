@@ -1,6 +1,6 @@
 package com.springportfolio.core.responses.user;
 
-import com.springportfolio.core.entity.User;
+import com.springportfolio.core.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
 

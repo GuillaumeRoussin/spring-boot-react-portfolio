@@ -1,7 +1,7 @@
 package com.springportfolio.core.apis.user;
 
-import com.springportfolio.core.entity.User;
-import com.springportfolio.core.repository.UserRepositoryInterface;
+import com.springportfolio.core.entity.user.User;
+import com.springportfolio.core.repository.user.UserRepositoryInterface;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
 import com.springportfolio.core.services.user.UserService;
 import org.springframework.http.ResponseEntity;

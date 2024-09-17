@@ -1,11 +1,11 @@
 package com.springportfolio.core;
 
-import com.springportfolio.core.entity.Privilege;
-import com.springportfolio.core.entity.Role;
-import com.springportfolio.core.entity.User;
-import com.springportfolio.core.repository.PrivilegeRepositoryInterface;
-import com.springportfolio.core.repository.RoleRepositoryInterface;
-import com.springportfolio.core.repository.UserRepositoryInterface;
+import com.springportfolio.core.entity.security.Privilege;
+import com.springportfolio.core.entity.security.Role;
+import com.springportfolio.core.entity.user.User;
+import com.springportfolio.core.repository.security.PrivilegeRepositoryInterface;
+import com.springportfolio.core.repository.security.RoleRepositoryInterface;
+import com.springportfolio.core.repository.user.UserRepositoryInterface;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,16 +39,24 @@ class Initializer implements CommandLineRunner {
         List<Privilege> adminPrivileges = Arrays.asList(
                 readPrivilege, writePrivilege);
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        createRoleIfNotFound("ROLE_USER", Collections.singletonList(readPrivilege));
-        User user = User
+        Role userRole = createRoleIfNotFound("ROLE_USER", Collections.singletonList(readPrivilege));
+        Role staffRole = createRoleIfNotFound("ROLE_STAFF", Collections.singletonList(readPrivilege));
+        createUser("admin", "admin@test.com", adminRole);
+        createUser("user", "user@test.com", userRole);
+        createUser("user2", "user2@test.com", userRole);
+        createUser("staff", "staff@test.com", staffRole);
+    }
+
+    private void createUser(String firstName, String mail, Role adminRole) {
+        User userAdmin = User
                 .builder()
-                .firstName("Test")
-                .lastName("Test")
+                .firstName(firstName)
+                .lastName("test")
                 .password(passwordEncoder.encode("test"))
-                .email("test@test.com")
+                .email(mail)
                 .roles(Collections.singletonList(adminRole))
                 .build();
-        userRepository.save(user);
+        userRepository.save(userAdmin);
     }
 
     @Transactional
