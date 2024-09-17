@@ -10,6 +10,7 @@ import java.util.Date;
 @Builder
 public class DefaultUserResponse {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -18,6 +19,7 @@ public class DefaultUserResponse {
 
     public static DefaultUserResponse toDefaultUserResponse(User user) {
         return DefaultUserResponse.builder()
+                .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
