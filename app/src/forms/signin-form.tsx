@@ -11,23 +11,23 @@ import {
 } from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {AuthenticationInput, AuthenticationSchemaInput, useAuthenticationLogin} from "@/api/authentication";
-import {useNavigate} from "react-router-dom";
+import {SigninInput, SigninSchemaInput, useAuthenticationSignin} from "@/api/authentication";
+import {useNavigate, Link} from "react-router-dom";
 import {ModeToggle} from "@/components/mode-toggle";
 
-export function LoginForm() {
-    const authLogin = useAuthenticationLogin();
+export function SigninForm() {
+    const authSignin = useAuthenticationSignin();
     const navigate = useNavigate();
-    const form = useForm<AuthenticationInput>({
-        resolver: zodResolver(AuthenticationSchemaInput),
+    const form = useForm<SigninInput>({
+        resolver: zodResolver(SigninSchemaInput),
         defaultValues: {
             email: "",
             password: "",
         },
     })
 
-    function onSubmit(values: AuthenticationInput) {
-        authLogin.mutate(values, {
+    function onSubmit(values: SigninInput) {
+        authSignin.mutate(values, {
             onSuccess: (_) => {
                 navigate("/dashboard");
             }
@@ -39,7 +39,7 @@ export function LoginForm() {
             <Card className="w-full max-w-sm">
                 <CardHeader>
                     <div className="flex items-center justify-between">
-                        <CardTitle className="text-2xl">Login</CardTitle>
+                        <CardTitle className="text-2xl">Sign In</CardTitle>
                         <ModeToggle/>
                     </div>
                     <CardDescription>
@@ -76,6 +76,12 @@ export function LoginForm() {
                                 )}
                             />
                             <Button className="w-full" type="submit">Sign in</Button>
+                            <div className="mt-4 text-center text-sm">
+                                Don't have an account?{" "}
+                                <Link to="/signup" className="underline">
+                                    Sign up
+                                </Link>
+                            </div>
                         </form>
                     </Form>
                 </CardContent></Card>

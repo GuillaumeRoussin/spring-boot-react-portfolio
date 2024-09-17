@@ -5,11 +5,12 @@ import {QueryClientProvider} from "react-query";
 import {queryClient} from "@/api/query-client";
 import {Toaster} from "@/components/ui/toaster"
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import {LoginForm} from "@/forms/login-form";
+import {SigninForm} from "@/forms/signin-form.tsx";
 import {useAuth, AuthProvider} from "@/contexts/auth-context";
 import PrivateRoute from "@/components/private-route";
 import MainPages from "@/pages/main-pages";
 import NotFound from "@/pages/not-found.tsx";
+import {SignupForm} from "@/forms/signup-form.tsx";
 
 
 createRoot(document.getElementById('root')!).render(
@@ -27,7 +28,8 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    <Route path="/" element={<LoginForm/>}/>
+                    <Route path="/" element={<SigninForm/>}/>
+                    <Route path="/signup" element={<SignupForm/>}/>
                     <Route element={<PrivateRoute isAuthenticated={useAuth().isAuthenticated}/>}>
                         <Route path="/dashboard" element={<MainPages/>}/>
                         <Route path="/*" element={<NotFound/>}/>
