@@ -13,12 +13,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {Link, Outlet, useNavigate, useLocation} from "react-router-dom";
+import {Link, Outlet, useNavigate, useLocation, useOutletContext} from "react-router-dom";
 import {useAuth} from "@/contexts/auth-context.tsx";
 import {ModeToggle} from "@/components/mode-toggle.tsx";
+import {useMe, UserDefaultResponse} from "@/api/user";
+
+export function useMeContext() {
+    return useOutletContext<UserDefaultResponse>();
+}
 
 export function Header() {
     const {logout} = useAuth();
+    const {data} = useMe();
     const navigate = useNavigate();
     const location = useLocation();
     return (
@@ -100,8 +106,8 @@ export function Header() {
                     </DropdownMenu>
                 </div>
             </header>
-            <main className="flex flex-1">
-                <Outlet/>
+            <main className="flex">
+                <Outlet context={data}/>
             </main>
         </div>
     )

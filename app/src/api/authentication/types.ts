@@ -29,9 +29,3 @@ export const SignupSchemaInput = z.object({
 
 
 export type SignupInput = z.infer<typeof SignupSchemaInput>;
-
-export const SignupSchemaResponse = z.object({
-    email: z.string().email(),
-    firstName: z.string(),
-    lastName: z.string(),
-});

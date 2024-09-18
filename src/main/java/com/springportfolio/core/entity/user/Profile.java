@@ -1,6 +1,6 @@
 package com.springportfolio.core.entity.user;
 
-import com.springportfolio.core.enums.EscaladeType;
+import com.springportfolio.core.enums.ClimbingType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,14 +27,17 @@ public class Profile {
     private String description;
 
     @Column(nullable = false)
-    private boolean profilPublic;
+    private boolean profilePublic;
 
-    @Column(nullable = false, length = 2)
-    private String maxCotation;
+    @Column(nullable = false)
+    private String maxRating;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private EscaladeType preferedEscaladeType;
+    private ClimbingType preferredClimbingType;
+
+    @Column()
+    private Date birthDate;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")

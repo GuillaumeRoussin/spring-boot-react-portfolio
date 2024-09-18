@@ -16,6 +16,7 @@ public class DefaultUserResponse {
     private String email;
     private Date createdAt;
     private Date updatedAt;
+    private boolean profile;
 
     public static DefaultUserResponse toDefaultUserResponse(User user) {
         return DefaultUserResponse.builder()
@@ -25,6 +26,7 @@ public class DefaultUserResponse {
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
+                .profile(user.getProfile() != null)
                 .build();
     }
 }

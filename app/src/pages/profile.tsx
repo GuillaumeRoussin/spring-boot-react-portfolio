@@ -1,3 +1,8 @@
+import {useMeContext} from "@/pages/header";
+import {ProfileForm} from "@/forms/profile-form.tsx";
+
 export function Profile() {
-    return <></>
+    const me = useMeContext();
+    console.log(me);
+    return <><ProfileForm/></>
 }

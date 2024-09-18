@@ -1,9 +1,10 @@
-import {ENDPOINT, SignupSchemaResponse, SignupInput} from "@/api/authentication";
+import {ENDPOINT, SignupInput} from "@/api/authentication";
 import {useMutation} from "react-query";
 import axiosInstance from "@/api/axios-instance";
 import {AxiosError} from "axios";
 import {useApiError} from "@/api/use-api-error";
 import {useToast} from "@/hooks/use-toast.ts";
+import {UserDefaultSchemaResponse} from "@/api/user";
 
 export function useAuthenticationSignup() {
     const handleApiError = useApiError();
@@ -11,7 +12,7 @@ export function useAuthenticationSignup() {
     return useMutation(
         async (payload: SignupInput) => {
             const res = await axiosInstance.post(ENDPOINT + 'signup', payload).then((response) => response.data);
-            const parsedResponse = SignupSchemaResponse.parse(res);
+            const parsedResponse = UserDefaultSchemaResponse.parse(res);
 
             return parsedResponse ?? null;
         },
