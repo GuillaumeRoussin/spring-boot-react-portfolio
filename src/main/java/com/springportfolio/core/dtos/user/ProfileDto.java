@@ -20,7 +20,6 @@ public class ProfileDto {
     @Size(min = 2, max = 3, message = "The length of max rating must be between 2 and 3 characters.")
     private String maxRating;
 
-    @NotBlank(message = "The preferred climbing type is required.")
     private ClimbingType preferredClimbingType;
 
     private Date birthDate;

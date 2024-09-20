@@ -15,11 +15,13 @@ import {Locations} from "@/pages/locations.tsx"
 import {Home} from "@/pages/home";
 import {Profile} from "@/pages/profile.tsx";
 import {Proposals} from "@/pages/proposals.tsx";
+import {ReactQueryDevtools} from "react-query/devtools";
 
 createRoot(document.getElementById('root')!).render(
     <AuthProvider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <QueryClientProvider client={queryClient}>
+                <ReactQueryDevtools/>
                 <App/>
             </QueryClientProvider>
         </ThemeProvider>

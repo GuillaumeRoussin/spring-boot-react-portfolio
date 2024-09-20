@@ -15,9 +15,19 @@ export const ProfileSchemaInput = z.object({
     }).min(10).max(250),
     maxRating: z.string().regex(/^[1-9][a-c]\+?$/, {message: 'Example 6a+'}),
     profilePublic: z.boolean(),
-    preferredClimbingType: z.nativeEnum(ClimbingType),
+    preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
     birthDate: z.date({message: "Birth date is invalid."})
 });
 export type ProfileInput = z.infer<typeof ProfileSchemaInput>;
 
-export const ProfileSchemaResponse = z.object({});
+export const ProfileSchemaResponse = z.object({
+    description: z.string(),
+    maxRating: z.string(),
+    profilePublic: z.boolean(),
+    preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
+    birthDate: z.string().datetime({ offset: true })
+});
+
+export type ProfileMeOptions = {
+    enabled?: boolean;
+};

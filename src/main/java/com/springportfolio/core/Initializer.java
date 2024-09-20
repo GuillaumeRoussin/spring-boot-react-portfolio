@@ -2,7 +2,9 @@ package com.springportfolio.core;
 
 import com.springportfolio.core.entity.security.Privilege;
 import com.springportfolio.core.entity.security.Role;
+import com.springportfolio.core.entity.user.Profile;
 import com.springportfolio.core.entity.user.User;
+import com.springportfolio.core.enums.ClimbingType;
 import com.springportfolio.core.repository.security.PrivilegeRepositoryInterface;
 import com.springportfolio.core.repository.security.RoleRepositoryInterface;
 import com.springportfolio.core.repository.user.UserRepositoryInterface;
@@ -48,6 +50,13 @@ class Initializer implements CommandLineRunner {
     }
 
     private void createUser(String firstName, String mail, Role adminRole) {
+        Profile profile = Profile.builder()
+                .profilePublic(true)
+                .maxRating("8a+")
+                .description("XXXXXX XXXXX XXXX")
+                .birthDate(new Date())
+                .preferredClimbingType(ClimbingType.INDOOR_BOULDER)
+                .build();
         User userAdmin = User
                 .builder()
                 .firstName(firstName)
@@ -55,6 +64,7 @@ class Initializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("test"))
                 .email(mail)
                 .roles(Collections.singletonList(adminRole))
+                .profile(profile)
                 .build();
         userRepository.save(userAdmin);
     }

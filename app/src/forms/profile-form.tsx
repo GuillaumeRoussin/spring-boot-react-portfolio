@@ -1,6 +1,13 @@
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
-import {ClimbingType, ProfileInput, ProfileSchemaInput, useCreateProfile} from "@/api/profile";
+import {
+    ClimbingType,
+    ProfileInput,
+    ProfileSchemaInput,
+    useCreateProfile,
+    useMeProfile,
+    usePutProfile
+} from "@/api/profile";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {
     Form,
@@ -25,9 +32,38 @@ import {cn} from "@/lib/utils"
 import {CalendarIcon} from "@radix-ui/react-icons"
 import {format} from "date-fns"
 import {Input} from "@/components/ui/input.tsx";
+import React from 'react';
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
-export function ProfileForm() {
+function ProfileSkeleton() {
+    return (
+        <Card className="w-full max-w-sm">
+            <CardHeader>
+                <div className="flex items-center justify-between">
+                    <CardTitle className="text-2xl">Profile</CardTitle>
+                </div>
+                <CardDescription>
+                    Complete here the information about your profile
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+                <div className="space-y-8">
+                    <Skeleton className="h-[125px] w-[250px] rounded-xl"/>
+                    <Skeleton className="h-[60px] w-[250px] rounded-xl"/>
+                    <Skeleton className="h-[60px] w-[250px] rounded-xl"/>
+                    <Skeleton className="h-[60px] w-[250px] rounded-xl"/>
+                    <Skeleton className="h-[60px] w-[250px] rounded-xl"/>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
+export function ProfileForm(props: { profile: boolean }) {
+    const {profile} = props;
+    const {data, isLoading} = useMeProfile({enabled: profile});
     const createProfile = useCreateProfile();
+    const putProfile = usePutProfile();
     const form = useForm<ProfileInput>({
         resolver: zodResolver(ProfileSchemaInput),
         defaultValues: {
@@ -36,17 +72,34 @@ export function ProfileForm() {
             preferredClimbingType: undefined,
             profilePublic: false,
         },
-    })
+    });
+    React.useEffect(() => {
+        if (profile && data) {
+            form.setValue("description", data.description);
+            form.setValue("maxRating", data.maxRating);
+            form.setValue("preferredClimbingType", data.preferredClimbingType);
+            form.setValue("profilePublic", data.profilePublic);
+            form.setValue("birthDate", new Date(data.birthDate));
+        }
+    }, [profile, data, form]);
+
 
     function onSubmit(values: ProfileInput) {
-        createProfile.mutate(values);
+        if (!profile) {
+            createProfile.mutate(values);
+        } else {
+            putProfile.mutate(values);
+        }
     }
 
+    if (profile && isLoading) {
+        return <ProfileSkeleton/>;
+    }
     return <>
-        <Card className="w-full max-w-sm">
+        <Card className="w-full max-w-lg">
             <CardHeader>
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-2xl">Profile</CardTitle>
+                    <CardTitle className="text-2xl">Your information's</CardTitle>
                 </div>
                 <CardDescription>
                     Complete here the information about your profile
@@ -77,15 +130,17 @@ export function ProfileForm() {
                             render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Preferred climbing type</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select your prefered climbing type"/>
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            {Object.values(ClimbingType).map((key) => (
-                                                <SelectItem key={key} value={key}>{key}</SelectItem>
+                                            {Object.entries(ClimbingType).map(([key, value]) => (
+                                                <SelectItem key={key} value={key}>
+                                                    {value}
+                                                </SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
@@ -169,7 +224,7 @@ export function ProfileForm() {
                                 </FormItem>
                             )}
                         />
-                        <Button className="w-full" type="submit">Create profile</Button>
+                        <Button className="w-full" type="submit">{profile ? "Save changes" : "Create profile"}</Button>
                     </form>
                 </Form>
             </CardContent></Card>
