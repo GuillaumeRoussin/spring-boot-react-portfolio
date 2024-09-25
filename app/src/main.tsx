@@ -16,6 +16,7 @@ import {Home} from "@/pages/home";
 import {Profile} from "@/pages/profile.tsx";
 import {Proposals} from "@/pages/proposals.tsx";
 import {ReactQueryDevtools} from "react-query/devtools";
+import {Profiles} from "@/pages/profiles.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <AuthProvider>
@@ -41,6 +42,7 @@ function App() {
                             <Route path="/location" element={<Locations/>}/>
                             <Route path="/proposals" element={<Proposals/>}/>
                             <Route path="/profile" element={<Profile/>}/>
+                            <Route path="/profiles" element={<Profiles/>}/>
                         </Route>
                         <Route path="/*" element={<NotFound/>}/>
                     </Route>

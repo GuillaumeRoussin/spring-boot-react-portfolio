@@ -10,7 +10,7 @@ import com.springportfolio.core.services.authentication.AuthenticationService;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,10 +69,8 @@ public class ProfileServiceImpl implements ProfileService {
         return ProfileResponse.toProfileResponse(user.getProfile());
     }
 
-    @Override
-    public Page<ProfileResponse> getAll(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Profile> profiles = profileRepository.findAll(pageRequest);
+    public Page<ProfileResponse> getAll(Pageable pageable) {
+        Page<Profile> profiles = profileRepository.findAll(pageable);
         return profiles.map(ProfileResponse::toProfileResponse);
     }
 }

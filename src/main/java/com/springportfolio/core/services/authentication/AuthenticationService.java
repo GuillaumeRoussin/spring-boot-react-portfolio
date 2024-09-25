@@ -68,4 +68,10 @@ public class AuthenticationService {
         UserDetails currentUserDetails = (UserDetails) authentication.getPrincipal();
         return userRepository.findByEmail(currentUserDetails.getUsername()).orElseThrow();
     }
+
+    public UserDetails getCurrentUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return (UserDetails) authentication.getPrincipal();
+    }
 }

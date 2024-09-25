@@ -3,6 +3,7 @@ package com.springportfolio.core.apis.user;
 import com.springportfolio.core.entity.user.User;
 import com.springportfolio.core.repository.user.UserRepositoryInterface;
 import com.springportfolio.core.responses.user.DefaultUserResponse;
+import com.springportfolio.core.responses.user.MeUserResponse;
 import com.springportfolio.core.services.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,13 +29,13 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/me")
-    public ResponseEntity<DefaultUserResponse> authenticatedUser() {
+    public ResponseEntity<MeUserResponse> authenticatedUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UserDetails currentUserDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userRepository.findByEmail(currentUserDetails.getUsername()).orElseThrow();
-        return ResponseEntity.ok(DefaultUserResponse.toDefaultUserResponse(currentUser));
+        return ResponseEntity.ok(MeUserResponse.toMeUserResponse(currentUser, currentUserDetails.getAuthorities()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

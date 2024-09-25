@@ -16,10 +16,10 @@ import {
 import {Link, Outlet, useNavigate, useLocation, useOutletContext} from "react-router-dom";
 import {useAuth} from "@/contexts/auth-context.tsx";
 import {ModeToggle} from "@/components/mode-toggle.tsx";
-import {useMe, UserDefaultResponse} from "@/api/user";
+import {useMe, UserMeResponse} from "@/api/user";
 
 export function useMeContext() {
-    return useOutletContext<UserDefaultResponse>();
+    return useOutletContext<UserMeResponse>();
 }
 
 export function Header() {
@@ -56,6 +56,16 @@ export function Header() {
                         >
                             Proposals
                         </Link>
+                        {
+                            data.authorities.includes({authority: "\"ROLE_ADMIN\""}) ? <Link
+                                to="/profiles"
+                                className={`transition-colors hover:text-foreground ${
+                                    location.pathname === "/profiles" ? "text-foreground" : "text-muted-foreground"
+                                }`}
+                            >
+                                Profiles
+                            </Link> : null
+                        }
                     </nav>
                     <Sheet>
                         <SheetTrigger asChild>

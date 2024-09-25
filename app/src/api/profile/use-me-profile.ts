@@ -4,7 +4,7 @@ import axiosInstance from "@/api/axios-instance.ts";
 
 export const useMeProfile = ({enabled}: ProfileMeOptions) => {
     return useQuery({
-        queryKey: [CACHE_KEYS.PROFILE],
+        queryKey: [CACHE_KEYS.PROFILE_ME],
         queryFn: async () => {
             const res = await axiosInstance
                 .get(ENDPOINT_USER, {

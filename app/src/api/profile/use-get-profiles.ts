@@ -1,20 +1,21 @@
-import {CACHE_KEYS, ENDPOINT, UserMeSchemaResponse} from "@/api/user";
-import axiosInstance from "@/api/axios-instance";
+import {ProfilesSchemaResponse} from "@/api/profile/types.ts";
 import {useQuery} from "react-query";
+import {CACHE_KEYS, ENDPOINT} from "@/api/profile/index.ts";
+import axiosInstance from "@/api/axios-instance.ts";
 
-export const useMe = () => {
+export const useGetProfiles = () => {
     return useQuery({
-        queryKey: [CACHE_KEYS.USER_ME],
+        queryKey: [CACHE_KEYS.PROFILES],
         queryFn: async () => {
             const res = await axiosInstance
-                .get(`${ENDPOINT + 'me'}`, {
+                .get(ENDPOINT, {
                     headers: {
                         accept: "application/json",
                         Authorization: `Bearer ${localStorage.getItem("authToken")}`
                     }
                 })
                 .then((response) => response.data);
-            return UserMeSchemaResponse.parse(res);
-        },
+            return ProfilesSchemaResponse.parse(res);
+        }
     });
 };

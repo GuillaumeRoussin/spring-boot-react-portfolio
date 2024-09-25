@@ -6,6 +6,7 @@ import com.springportfolio.core.services.user.ProfileServiceImpl;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +46,8 @@ public class ProfileController {
 
     @PreAuthorize("hasRole('STAFF')")
     @GetMapping()
-    public Page<ProfileResponse> getProfiles(@RequestParam int page, @RequestParam int size) {
-        return profileService.getAll(page, size);
+    public Page<ProfileResponse> getProfiles(Pageable pageable) {
+        return profileService.getAll(pageable);
     }
 
 //    @PreAuthorize("hasRole('STAFF')")

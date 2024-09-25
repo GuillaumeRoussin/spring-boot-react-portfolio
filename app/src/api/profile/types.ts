@@ -1,4 +1,5 @@
 import * as z from "zod";
+import {pageableSchema} from "@/api/types.ts";
 
 export enum ClimbingType {
     OUTDOOR_BOULDER = "Outdoor boulder",
@@ -25,7 +26,19 @@ export const ProfileSchemaResponse = z.object({
     maxRating: z.string(),
     profilePublic: z.boolean(),
     preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
-    birthDate: z.string().datetime({ offset: true })
+    birthDate: z.string().datetime({offset: true})
+});
+
+export const ProfilesSchemaResponse = z.object({
+    content: z.array(z.object({
+        id: z.number(),
+        description: z.string(),
+        maxRating: z.string(),
+        profilePublic: z.boolean(),
+        preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
+        birthDate: z.string().datetime({offset: true})
+    })),
+    pageableSchema
 });
 
 export type ProfileMeOptions = {

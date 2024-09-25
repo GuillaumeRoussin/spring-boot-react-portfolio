@@ -4,7 +4,7 @@ import axiosInstance from "@/api/axios-instance";
 import {AxiosError} from "axios";
 import {useApiError} from "@/api/use-api-error";
 import {useToast} from "@/hooks/use-toast.ts";
-import {UserDefaultSchemaResponse} from "@/api/user";
+import {UserMeSchemaResponse} from "@/api/user";
 
 export function useAuthenticationSignup() {
     const handleApiError = useApiError();
@@ -12,7 +12,7 @@ export function useAuthenticationSignup() {
     return useMutation(
         async (payload: SignupInput) => {
             const res = await axiosInstance.post(ENDPOINT + 'signup', payload).then((response) => response.data);
-            const parsedResponse = UserDefaultSchemaResponse.parse(res);
+            const parsedResponse = UserMeSchemaResponse.parse(res);
 
             return parsedResponse ?? null;
         },
