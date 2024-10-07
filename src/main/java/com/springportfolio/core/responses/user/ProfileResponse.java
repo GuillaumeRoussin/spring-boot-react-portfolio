@@ -5,7 +5,7 @@ import com.springportfolio.core.enums.ClimbingType;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -16,7 +16,7 @@ public class ProfileResponse {
     private boolean profilePublic;
     private String maxRating;
     private ClimbingType preferredClimbingType;
-    private Date birthDate;
+    private LocalDate birthDate;
 
     public static ProfileResponse toProfileResponse(Profile profile) {
         return ProfileResponse.builder()

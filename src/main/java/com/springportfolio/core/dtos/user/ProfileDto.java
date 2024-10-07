@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class ProfileDto {
@@ -22,5 +22,5 @@ public class ProfileDto {
 
     private ClimbingType preferredClimbingType;
 
-    private Date birthDate;
+    private LocalDate birthDate;
 }

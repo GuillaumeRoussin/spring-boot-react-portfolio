@@ -9,6 +9,7 @@ import com.springportfolio.core.repository.security.PrivilegeRepositoryInterface
 import com.springportfolio.core.repository.security.RoleRepositoryInterface;
 import com.springportfolio.core.repository.user.UserRepositoryInterface;
 import jakarta.transaction.Transactional;
+import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -43,32 +44,40 @@ class Initializer implements CommandLineRunner {
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         Role userRole = createRoleIfNotFound("ROLE_USER", Collections.singletonList(readPrivilege));
         Role staffRole = createRoleIfNotFound("ROLE_STAFF", Collections.singletonList(readPrivilege));
-        createUser("admin", "admin@test.com", adminRole);
-        createUser("user", "user@test.com", userRole);
-        createUser("staff", "staff@test.com", staffRole);
+        createUser("admin@test.com", adminRole);
+        createUser("user@test.com", userRole);
+        createUser("staff@test.com", staffRole);
         for (int i = 0; i < 20; i++) {
-            createUser("user_" + i, "user" + i + "@test.com", userRole);
+            createUser("user" + i + "@test.com", userRole);
         }
     }
 
-    private void createUser(String firstName, String mail, Role adminRole) {
+    private void createUser(String mail, Role adminRole) {
+        Faker faker = new Faker();
         Profile profile = Profile.builder()
-                .profilePublic(true)
+                .profilePublic(faker.bool().bool())
                 .maxRating("8a+")
-                .description("XXXXXX XXXXX XXXX")
-                .birthDate(new Date())
-                .preferredClimbingType(ClimbingType.INDOOR_BOULDER)
+                .description(faker.lorem().paragraph(2))
+                .birthDate(faker.timeAndDate().birthday())
+                .preferredClimbingType(getRandomClimbingType())
                 .build();
         User userAdmin = User
                 .builder()
-                .firstName(firstName)
-                .lastName("test")
+                .firstName(faker.name().firstName())
+                .lastName(faker.name().lastName())
                 .password(passwordEncoder.encode("test"))
                 .email(mail)
                 .roles(Collections.singletonList(adminRole))
                 .profile(profile)
                 .build();
         userRepository.save(userAdmin);
+    }
+
+    public static ClimbingType getRandomClimbingType() {
+        Random random = new Random();
+        ClimbingType[] colors = ClimbingType.values();
+        int randomIndex = random.nextInt(colors.length);
+        return colors[randomIndex];
     }
 
     @Transactional

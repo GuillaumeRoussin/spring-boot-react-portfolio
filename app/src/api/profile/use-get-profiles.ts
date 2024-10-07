@@ -16,6 +16,7 @@ export const useGetProfiles = ({params}: ProfilesOptions) => {
                     }
                 })
                 .then((response) => response.data);
+            console.log(res);
             return ProfilesSchemaResponse.parse(res);
         }
     });

@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,8 +48,6 @@ public class AuthenticationService {
                 .email(input.getEmail())
                 .roles(List.of(roleUser.orElseThrow()))
                 .password(passwordEncoder.encode(input.getPassword()))
-                .createdAt(new Date())
-                .updatedAt(new Date())
                 .build();
 
         return DefaultUserResponse.toDefaultUserResponse(userRepository.save(user));
@@ -67,11 +64,5 @@ public class AuthenticationService {
 
         UserDetails currentUserDetails = (UserDetails) authentication.getPrincipal();
         return userRepository.findByEmail(currentUserDetails.getUsername()).orElseThrow();
-    }
-
-    public UserDetails getCurrentUserDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        return (UserDetails) authentication.getPrincipal();
     }
 }

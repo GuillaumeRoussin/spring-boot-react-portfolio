@@ -14,4 +14,8 @@ export const columns: ColumnDef<ProfileResponse>[] = [
         accessorKey: "preferredClimbingType",
         header: "Preferred Climbing Type",
     },
+    {
+        accessorKey: "description",
+        header: "Description",
+    },
 ]

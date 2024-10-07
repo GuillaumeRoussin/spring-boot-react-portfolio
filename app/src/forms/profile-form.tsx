@@ -85,6 +85,7 @@ export function ProfileForm(props: { profile: boolean }) {
 
 
     function onSubmit(values: ProfileInput) {
+        console.log(values);
         if (!profile) {
             createProfile.mutate(values);
         } else {

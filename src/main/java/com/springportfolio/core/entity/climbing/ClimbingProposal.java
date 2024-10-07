@@ -50,10 +50,7 @@ public class ClimbingProposal {
     @JoinColumn(name = "creator", nullable = false)
     private User creator;
 
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
-    )
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "climbing_proposal_join_requests",
             joinColumns = @JoinColumn(name = "climbing_proposal_id"),

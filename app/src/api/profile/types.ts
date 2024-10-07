@@ -17,7 +17,10 @@ export const ProfileSchemaInput = z.object({
     maxRating: z.string().regex(/^[1-9][a-c]\+?$/, {message: 'Example 6a+'}),
     profilePublic: z.boolean(),
     preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
-    birthDate: z.date({message: "Birth date is invalid."})
+    birthDate: z.date({message: "Birth date is invalid."}).transform((val) => {//bad
+        val.setHours(2);
+        return val;
+    })
 });
 export type ProfileInput = z.infer<typeof ProfileSchemaInput>;
 
@@ -27,7 +30,7 @@ export const ProfileSchemaResponse = z.object({
     maxRating: z.string(),
     profilePublic: z.boolean(),
     preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
-    birthDate: z.string().datetime({offset: true})
+    birthDate: z.string().date()
 });
 export type ProfileResponse = z.infer<typeof ProfileSchemaResponse>;
 export const ProfilesSchemaResponse = PageableSchema.extend({

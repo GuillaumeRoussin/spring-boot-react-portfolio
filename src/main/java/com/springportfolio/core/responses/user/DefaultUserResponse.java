@@ -4,7 +4,7 @@ import com.springportfolio.core.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -14,8 +14,8 @@ public class DefaultUserResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private Date createdAt;
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private boolean profile;
 
 

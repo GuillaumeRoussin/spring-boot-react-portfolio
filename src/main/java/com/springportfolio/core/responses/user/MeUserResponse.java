@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 @Data
 @Builder
@@ -16,8 +16,8 @@ public class MeUserResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private Date createdAt;
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private boolean profile;
     private Collection<? extends GrantedAuthority> authorities;
 
