@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-export const pageableSchema = z.object({
+export const PageableSchema = z.object({
     page: z.object({
         size: z.number(),
         number: z.number(),
@@ -8,3 +8,8 @@ export const pageableSchema = z.object({
         totalPages: z.number()
     })
 });
+
+export type PaginationParams = {
+    page: number
+    size: number
+}

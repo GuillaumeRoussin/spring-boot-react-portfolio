@@ -57,7 +57,7 @@ export function Header() {
                             Proposals
                         </Link>
                         {
-                            data.authorities.includes({authority: "\"ROLE_ADMIN\""}) ? <Link
+                            data.authorities.some(auth => auth.authority === "ROLE_ADMIN") ? <Link
                                 to="/profiles"
                                 className={`transition-colors hover:text-foreground ${
                                     location.pathname === "/profiles" ? "text-foreground" : "text-muted-foreground"

@@ -1,5 +1,5 @@
 import * as z from "zod";
-import {pageableSchema} from "@/api/types.ts";
+import {PageableSchema, PaginationParams} from "@/api/types.ts";
 
 export enum ClimbingType {
     OUTDOOR_BOULDER = "Outdoor boulder",
@@ -22,25 +22,22 @@ export const ProfileSchemaInput = z.object({
 export type ProfileInput = z.infer<typeof ProfileSchemaInput>;
 
 export const ProfileSchemaResponse = z.object({
+    id: z.number(),
     description: z.string(),
     maxRating: z.string(),
     profilePublic: z.boolean(),
     preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
     birthDate: z.string().datetime({offset: true})
 });
-
-export const ProfilesSchemaResponse = z.object({
-    content: z.array(z.object({
-        id: z.number(),
-        description: z.string(),
-        maxRating: z.string(),
-        profilePublic: z.boolean(),
-        preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
-        birthDate: z.string().datetime({offset: true})
-    })),
-    pageableSchema
+export type ProfileResponse = z.infer<typeof ProfileSchemaResponse>;
+export const ProfilesSchemaResponse = PageableSchema.extend({
+    content:
+        z.array(ProfileSchemaResponse)
 });
-
 export type ProfileMeOptions = {
     enabled?: boolean;
+};
+
+export type ProfilesOptions = {
+    params?: PaginationParams;
 };

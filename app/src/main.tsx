@@ -16,7 +16,7 @@ import {Home} from "@/pages/home";
 import {Profile} from "@/pages/profile.tsx";
 import {Proposals} from "@/pages/proposals.tsx";
 import {ReactQueryDevtools} from "react-query/devtools";
-import {Profiles} from "@/pages/profiles.tsx";
+import {Profiles} from "@/pages/profiles/profiles.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <AuthProvider>

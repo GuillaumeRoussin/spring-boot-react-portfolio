@@ -45,8 +45,10 @@ class Initializer implements CommandLineRunner {
         Role staffRole = createRoleIfNotFound("ROLE_STAFF", Collections.singletonList(readPrivilege));
         createUser("admin", "admin@test.com", adminRole);
         createUser("user", "user@test.com", userRole);
-        createUser("user2", "user2@test.com", userRole);
         createUser("staff", "staff@test.com", staffRole);
+        for (int i = 0; i < 20; i++) {
+            createUser("user_" + i, "user" + i + "@test.com", userRole);
+        }
     }
 
     private void createUser(String firstName, String mail, Role adminRole) {

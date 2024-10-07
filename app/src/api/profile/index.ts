@@ -1,5 +1,5 @@
 export const ENDPOINT_USER = '/profiles/me';
-export const ENDPOINT = '/profiles/';
+export const ENDPOINT = '/profiles';
 
 export const CACHE_KEYS = {
     PROFILE_ME: "PROFILE_ME",

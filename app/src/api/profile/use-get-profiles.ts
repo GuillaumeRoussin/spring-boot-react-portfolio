@@ -1,14 +1,15 @@
-import {ProfilesSchemaResponse} from "@/api/profile/types.ts";
+import {ProfilesOptions, ProfilesSchemaResponse} from "@/api/profile/types.ts";
 import {useQuery} from "react-query";
 import {CACHE_KEYS, ENDPOINT} from "@/api/profile/index.ts";
 import axiosInstance from "@/api/axios-instance.ts";
 
-export const useGetProfiles = () => {
+export const useGetProfiles = ({params}: ProfilesOptions) => {
     return useQuery({
-        queryKey: [CACHE_KEYS.PROFILES],
+        queryKey: [CACHE_KEYS.PROFILES,params],
         queryFn: async () => {
             const res = await axiosInstance
                 .get(ENDPOINT, {
+                    params: {...params},
                     headers: {
                         accept: "application/json",
                         Authorization: `Bearer ${localStorage.getItem("authToken")}`
