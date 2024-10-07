@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JWTVerificationException.class)
     public ResponseEntity<Map<String, String>> handleJWTVerificationException(JWTVerificationException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "Invalid or expired token");
+        errorResponse.put("error", "UNAUTHORIZED");
         errorResponse.put("message", ex.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);

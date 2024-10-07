@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import {createContext, useContext, useState, ReactNode} from 'react';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -15,8 +15,9 @@ export const useAuth = () => {
     }
     return context;
 };
+let logoutFn: () => void; // This will hold the reference to the logout function.
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
 
     const login = () => {
@@ -28,10 +29,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem('tokenExpiry');
         setIsAuthenticated(false);
     };
-
+    logoutFn = logout;
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{isAuthenticated, login, logout}}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const getLogoutFn = () => logoutFn;

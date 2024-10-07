@@ -69,7 +69,7 @@ public class JwtService {
         try {
             return verifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new RuntimeException("Invalid or expired token", e);
+            throw new JWTVerificationException("Invalid or expired token", e);
         }
     }
 
