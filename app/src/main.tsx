@@ -11,7 +11,7 @@ import PrivateRoute from "@/components/private-route";
 import {Header} from "@/pages/header.tsx";
 import NotFound from "@/pages/not-found.tsx";
 import {SignupForm} from "@/forms/signup-form.tsx";
-import {Locations} from "@/pages/locations.tsx"
+import {Locations} from "@/pages/locations/locations.tsx"
 import {Home} from "@/pages/home";
 import {Profile} from "@/pages/profile.tsx";
 import {Proposals} from "@/pages/proposals.tsx";
