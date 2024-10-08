@@ -79,7 +79,7 @@ export function ProfileForm(props: { profile: boolean }) {
             form.setValue("maxRating", data.maxRating);
             form.setValue("preferredClimbingType", data.preferredClimbingType);
             form.setValue("profilePublic", data.profilePublic);
-            form.setValue("birthDate", new Date(data.birthDate));
+            form.setValue("birthDate", data.birthDate);
         }
     }, [profile, data, form]);
 
@@ -209,8 +209,13 @@ export function ProfileForm(props: { profile: boolean }) {
                                         <PopoverContent className="w-auto p-0" align="start">
                                             <Calendar
                                                 mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
+                                                selected={field.value ? new Date(field.value) : undefined}
+                                                onSelect={(date) => {
+                                                    if (date) {
+                                                        const localDate = format(date, 'yyyy-MM-dd');
+                                                        field.onChange(localDate);
+                                                    }
+                                                }}
                                                 disabled={(date) =>
                                                     date > new Date() || date < new Date("1900-01-01")
                                                 }

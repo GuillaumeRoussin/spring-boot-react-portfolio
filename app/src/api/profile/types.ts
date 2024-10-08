@@ -17,10 +17,14 @@ export const ProfileSchemaInput = z.object({
     maxRating: z.string().regex(/^[1-9][a-c]\+?$/, {message: 'Example 6a+'}),
     profilePublic: z.boolean(),
     preferredClimbingType: z.enum(Object.keys(ClimbingType) as [keyof typeof ClimbingType]),
-    birthDate: z.date({message: "Birth date is invalid."}).transform((val) => {//bad
-        val.setHours(2);
-        return val;
-    })
+    birthDate: z.string().refine(
+        (dateStr) => {
+            return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+        },
+        {
+            message: "Invalid date format. Must be YYYY-MM-DD.",
+        }
+    ),
 });
 export type ProfileInput = z.infer<typeof ProfileSchemaInput>;
 
