@@ -117,7 +117,7 @@ export function Header() {
                         </DropdownMenu>
                     </div>
                 </header>
-                <main className="flex">
+                <main className="flex min-h-screen w-full">
                     <Outlet context={data}/>
                 </main>
             </div>

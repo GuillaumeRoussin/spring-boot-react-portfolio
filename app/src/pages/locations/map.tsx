@@ -4,15 +4,15 @@ import {
     TileLayer,
     Marker,
     MarkerProps,
-    FeatureGroup,
+    FeatureGroup
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import {LatLngExpression} from "leaflet";
 import {EditControl} from "react-leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import L from "leaflet";
+import MiniMapControl from "@/pages/locations/mini-map-control.tsx";
 
-//TODO marker polygon editing
 type Polygon = LatLngExpression[][];
 
 interface ShapeData {
@@ -51,11 +51,10 @@ export function Map() {
         const layers = e.layers._layers;
 
         Object.values(layers).forEach((layer: any) => {
+            const id = (layer as any)._leaflet_id.toString();
             if (layer instanceof L.Marker) {
-                const id = (layer as any)._leaflet_id.toString();
                 setLocations(locations.filter((location) => location.id !== id));
             } else if (layer instanceof L.Polygon) {
-                const id = (layer as any)._leaflet_id.toString();
                 setShapes(shapes.filter((shape) => shape.id !== id));
             }
         });
@@ -63,23 +62,30 @@ export function Map() {
 
     const handleEdit = (e: any) => {
         const layers = e.layers._layers;
-
         Object.values(layers).forEach((layer: any) => {
-            if (layer instanceof L.Polygon) {
-                const id = (layer as any)._leaflet_id.toString();
-                const coordinates = layer.getLatLngs() as Polygon;
-                setShapes(shapes.map((shape) => (shape.id === id ? {...shape, coordinates} : shape)));
+            const id = (layer as any)._leaflet_id.toString();
+            if (layer instanceof L.Marker) {
+                const {lat, lng} = layer.getLatLng();
+                setLocations(locations.filter((location) => location.id !== id));
+                setLocations((prevState) => ([...prevState, {lat: lat, lng: lng, id: id}]))
+            } else if (layer instanceof L.Polygon) {
+                setShapes(shapes.filter((shape) => shape.id !== id));
+                setShapes((prevState) => ([...prevState, {
+                    id: id,
+                    shapeType: "polygon",
+                    coordinates: layer.getLatLngs() as Polygon
+                }]));
             }
         });
     };
 
     return (
-        <div>
+        <div className={"lg:container lg:mx-auto"}>
             <h1>Submit and Remove Locations and Shapes on Map</h1>
             <MapContainer
                 center={[51.505, -0.09]}
                 zoom={13}
-                style={{height: "500px", width: "500px"}}
+                style={{height: "60%", width: "100%"}}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -108,6 +114,7 @@ export function Map() {
                         position={location as MarkerProps["position"]}
                     />
                 ))}
+                <MiniMapControl position={"topleft"}/>
             </MapContainer>
             <div>
                 <h3>Submitted Locations:</h3>
@@ -127,7 +134,8 @@ export function Map() {
                 <ul>
                     {shapes.map((shape) => (
                         <li key={shape.id}>
-                            Polygon ID: {shape.id}, coordinates : {shape.coordinates.toString()}
+                            Polygon ID: {shape.id}, type : {shape.shapeType}, coordinates
+                            : {shape.coordinates.toString()},
                             <button onClick={() => setShapes(shapes.filter((s) => s.id !== shape.id))}
                                     style={{marginLeft: '10px'}}>Delete
                             </button>
