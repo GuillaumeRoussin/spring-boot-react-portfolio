@@ -8,18 +8,15 @@ import com.springportfolio.core.services.authentication.AuthenticationService;
 import com.springportfolio.core.services.authentication.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-
 @RequestMapping("/auth")
 @RestController
-public class AuthenticationController {
+public class   AuthenticationController {
     private final JwtService jwtService;
 
     private final AuthenticationService authenticationService;
