@@ -9,37 +9,36 @@ import {DialogFooter} from "@/components/ui/dialog.tsx";
 import {useLocationsStateManager} from "@/contexts/locations-context.tsx";
 
 export function LocationForm() {
-    const {locations, setLocations, shapes, setShapes, setOpen, setId, id} = useLocationsStateManager();
+    const {locations, setLocations, setOpen, setId, id} = useLocationsStateManager();
+    const loc = locations.find((location) => location.id === id);
     const form = useForm<LocationDetailsInput>({
         resolver: zodResolver(LocationDetailsSchemaInput),
         defaultValues: {
-            description: "",
-            name: ""
+            description: loc?.description ? loc.description : "",
+            name: loc?.name ? loc.name : "",
         },
     });
 
-
     function onSubmit(values: LocationDetailsInput) {
-        const loc = locations.find((location) => location.id === id);
-        const shape = shapes.find((shape) => shape.id === id);
         if (loc) {
             setLocations(locations.filter((location) => location.id !== id));
-            setLocations((prevState) => ([...prevState, {
-                lat: loc.lat,
-                lng: loc.lng,
-                id: loc.id,
-                description: values.description,
-                name: values.name
-            }]))
-        } else if (shape) {
-            setShapes(shapes.filter((shape) => shape.id !== id));
-            setShapes((prevState) => ([...prevState, {
-                id: shape.id,
-                shapeType: "polygon",
-                coordinates: shape.coordinates,
-                description: values.description,
-                name: values.name,
-            }]));
+            if (loc.shapeType === "marker") { //problem with the type union
+                setLocations((prevState) => ([...prevState, {
+                    coordinates: loc.coordinates,
+                    shapeType: loc.shapeType,
+                    id: loc.id,
+                    description: values.description,
+                    name: values.name
+                }]))
+            } else {
+                setLocations((prevState) => ([...prevState, {
+                    coordinates: loc.coordinates,
+                    shapeType: loc.shapeType,
+                    id: loc.id,
+                    description: values.description,
+                    name: values.name
+                }]))
+            }
         }
         setOpen(false);
         setId(null);

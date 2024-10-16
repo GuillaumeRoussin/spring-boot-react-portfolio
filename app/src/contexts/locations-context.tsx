@@ -1,11 +1,9 @@
 import React, {createContext, ReactNode, useContext, useState} from "react";
-import {Location, ShapeData} from "@/pages/locations/map.tsx";
+import {Location} from "@/pages/locations/map.tsx";
 
 export interface LocationsStateManagerContextProps {
     locations: Location[];
     setLocations: React.Dispatch<React.SetStateAction<Location[]>>;
-    shapes: ShapeData[];
-    setShapes: React.Dispatch<React.SetStateAction<ShapeData[]>>;
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     id: string | null;
@@ -18,11 +16,8 @@ export interface LocationsStateManagerProps {
 
 const LocationsStateManagerContext = createContext<LocationsStateManagerContextProps | undefined>(undefined);
 
-export const LocationsStateManager: React.FC<LocationsStateManagerProps> = ({
-                                                                          children,
-                                                                      }) => {
+export const LocationsStateManager: React.FC<LocationsStateManagerProps> = ({children}) => {
     const [locations, setLocations] = useState<Location[]>([]);
-    const [shapes, setShapes] = useState<ShapeData[]>([]);
     const [open, setOpen] = useState(false);
     const [id, setId] = useState<string | null>(null);
     return (
@@ -30,8 +25,6 @@ export const LocationsStateManager: React.FC<LocationsStateManagerProps> = ({
             value={{
                 locations,
                 setLocations,
-                shapes,
-                setShapes,
                 open,
                 setOpen,
                 id,

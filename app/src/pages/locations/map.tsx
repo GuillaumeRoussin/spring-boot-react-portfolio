@@ -1,7 +1,7 @@
 import {useMemo, useState} from "react";
 import {FeatureGroup, MapContainer, TileLayer} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L, {LatLngExpression, Map as LeafletMap} from "leaflet";
+import {LatLng, Map as LeafletMap} from "leaflet";
 import {EditControl} from "react-leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import MiniMapControl from "@/pages/locations/mini-map-control.tsx";
@@ -16,45 +16,35 @@ import {
 } from "@/components/ui/dialog";
 import {useLocationsStateManager} from "@/contexts/locations-context.tsx";
 
-
-export interface ShapeData {
-    name?: string;
-    description?: string;
-    id: string;
-    shapeType: string;
-    coordinates: LatLngExpression[][];
+export interface MarkerLocation {
+    shapeType: "marker";
+    coordinates: LatLng;
 }
 
-export interface Location {
+export interface PolygonLocation {
+    shapeType: "polygon";
+    coordinates: LatLng[][];
+}
+
+export type Location = (MarkerLocation | PolygonLocation) & {
+    id: string;
     name?: string;
     description?: string;
-    lat: number;
-    lng: number;
-    id: string;
-}
+};
 
 export function Map() {
     const [map, setMap] = useState<LeafletMap | null>(null)
-    const {locations, setLocations, shapes, setShapes, id, setId, open, setOpen} = useLocationsStateManager();
+    const {locations, setLocations, id, setId, open, setOpen} = useLocationsStateManager();
+
     const handleCreate = (e: any) => {
-        console.log(locations);
         const type = e.layerType;
         const layer = e.layer;
 
-        if (type === "marker") {
-            const {lat, lng} = layer.getLatLng();
-            setLocations((prevState) => ([...prevState, {
-                lat: lat,
-                lng: lng,
-                id: layer._leaflet_id.toString()
-            }]))
-        } else if (type === "polygon") {
-            setShapes((prevState) => ([...prevState, {
-                id: layer._leaflet_id.toString(),
-                shapeType: type,
-                coordinates: layer.getLatLngs() as LatLngExpression[][]
-            }]));
-        }
+        setLocations((prevState) => ([...prevState, {
+            coordinates: type === "marker" ? layer.getLatLng() : layer.getLatLngs(),
+            shapeType: type,
+            id: layer._leaflet_id.toString()
+        }]));
         setOpen(true);
         setId(layer._leaflet_id.toString());
     };
@@ -64,11 +54,7 @@ export function Map() {
 
         Object.values(layers).forEach((layer: any) => {
             const id = (layer as any)._leaflet_id.toString();
-            if (layer instanceof L.Marker) {
-                setLocations(locations.filter((location) => location.id !== id));
-            } else if (layer instanceof L.Polygon) {
-                setShapes(shapes.filter((shape) => shape.id !== id));
-            }
+            setLocations(locations.filter((location) => location.id !== id));
         });
     };
 
@@ -76,35 +62,20 @@ export function Map() {
         const layers = e.layers._layers;
         Object.values(layers).forEach((layer: any) => {
             const id = (layer as any)._leaflet_id.toString();
-            if (layer instanceof L.Marker) {
-                const {lat, lng} = layer.getLatLng();
-                setLocations((prevState) => {
-                    const prevLocation = prevState.find(location => location.id === id);
-                    const filteredLocations = prevState.filter((location) => location.id !== id);
-                    return [...filteredLocations, {
-                        lat: lat,
-                        lng: lng,
-                        id: id,
-                        name: prevLocation?.name,
-                        description: prevLocation?.description,
-                    }]
-                });
-            } else if (layer instanceof L.Polygon) {
-                setShapes((prevState) => {
-                    const prevShape = prevState.find(shape => shape.id === id);
-                    const filteredShapes = prevState.filter((shape) => shape.id !== id);
-                    return [...filteredShapes, {
-                        id: id,
-                        shapeType: "polygon",
-                        coordinates: layer.getLatLngs() as LatLngExpression[][],
-                        name: prevShape?.name,
-                        description: prevShape?.description,
-                    }]
-                });
-            }
+            setLocations((prevState) => {
+                const prevLocation = prevState.find(location => location.id === id);
+                const filteredLocations = prevState.filter((location) => location.id !== id);
+                const shapeType = (prevLocation as Location).shapeType;
+                return [...filteredLocations, {
+                    id: id,
+                    shapeType: (prevLocation as Location).shapeType,
+                    coordinates: shapeType === "marker" ? layer.getLatLng() : layer.getLatLngs(),
+                    name: prevLocation?.name,
+                    description: prevLocation?.description,
+                }]
+            });
         });
     };
-
 
     const displayMap = useMemo(
         () => {
@@ -112,7 +83,7 @@ export function Map() {
                 <MapContainer
                     center={[51.505, -0.09]}
                     zoom={13}
-                    style={{height: "60%", width: "100%"}}
+                    style={{height: "90%", width: "100%", zIndex: 5}}
                     ref={setMap}
                 >
                     <TileLayer
@@ -142,11 +113,8 @@ export function Map() {
         [],
     )
     return (
-        <div className={"grid grid-flow-row-dense grid-cols-3 lg:container lg:mx-auto"}>
-            <div className={`col-span-2 ${open ? 'invisible' : 'visible'}`}>
-                {displayMap}
-            </div>
-            <div>
+        <>
+            <div className="w-[30%] bg-background">
                 {map ? <MapRestitution
                     map={map}
                 /> : null}
@@ -165,6 +133,9 @@ export function Map() {
                     </DialogContent>
                 </Dialog>
             </div>
-        </div>
+            <div className="w-[70%]">
+                {displayMap}
+            </div>
+        </>
     );
 }
