@@ -2,18 +2,29 @@
 
 ## Description
 
-**Climber Connect** is a full-stack web application that allows users to create and manage climber profiles, register as climbers, and organize climbing activities. Users can store their favorite climbing locations on a map and create climbing groups to organize outings with others. The app is built with Spring Boot on the backend and React on the frontend, providing a seamless experience for both user management and map integration.
+**Climber Connect** is a full-stack web application that allows users to create and manage climber profiles, register as
+climbers, and organize climbing activities. Users can store their favorite climbing locations on a map and create
+climbing groups to organize outings with others. The app is built with Spring Boot on the backend and React on the
+frontend, providing a seamless experience for both user management and map integration.
 
 ## Proof of concepts
 
 ### Backend
+
 - **Authentication**: Springboot application secured with Auth0 Jwt and Spring security including roles and privileges.
-- **Api**: CRUD API using RestController and DTOS. Jarkata and Passay are used for data validation. Spring security authorities is used for route protection. Pagination using Spring data JPA.
+- **Api**: CRUD API using RestController and DTOS. Jarkata and Passay are used for data validation. Spring security
+  authorities is used for route protection. Pagination using Spring data JPA.
+- **Geometry Data**: Usage of Hibernate-spatial. Storing POINT or POLYGON in database. Object on java side are from
+  org.locationtech.jts.geom.
 
 ### Frontend
-- **Routing**: React application provides secured routes (using React router) based on roles and unsecured ones for sign-in and sign-up.
-- **Api**: React query and zod are used for getting and mutate data. Server side pagination is also implemented (shadcn/ui tables).
-- **Map**: React leaflet map implementation.
+
+- **Routing**: React application provides secured routes (using React router) based on roles and unsecured ones for
+  sign-in and sign-up.
+- **Api**: React query and zod are used for getting and mutate data. Server side pagination is also implemented (
+  shadcn/ui tables).
+- **Map**: React leaflet map implementation. User can create point and polygons (with names, descriptions ...) and save
+  them to database.
 
 ## Technologies Used
 
@@ -25,6 +36,8 @@
     - **Spring Boot Starter Security**: For implementing authentication and authorization mechanisms.
     - **Spring Boot Starter Validation**: For input validation.
 - **Hibernate**: Used in conjunction with Spring Data JPA for ORM (Object-Relational Mapping).
+- **Hibernate spatial**: Used in conjunction with Spring Data JPA for ORM (Object-Relational Mapping) for Geometric
+  data.
 - **Jackson Datatype for Hibernate**: Handling JSON serialization and deserialization of Hibernate entities.
 - **Java JWT (Auth0)**: For handling JWT-based authentication.
 - **Passay**: For enforcing password policies and validations.
@@ -61,10 +74,12 @@
 
 ## Features
 
-- **Climber Profiles**: Users can create and manage their climber profiles, including details such as skill level, climbing experience, and preferred climbing styles.
+- **Climber Profiles**: Users can create and manage their climber profiles, including details such as skill level,
+  climbing experience, and preferred climbing styles.
 - **Locations**: Save favorite climbing spots on an interactive map using.
 - **Climbing Groups**: Create and manage climbing groups, invite others to join, and organize group outings.
-- **User Authentication**: Secure login and registration system using Spring Security, allowing users to manage their profiles.
+- **User Authentication**: Secure login and registration system using Spring Security, allowing users to manage their
+  profiles.
 - **Interactive Map**: Display and manage favorite climbing locations directly on an interactive map.
 
 ## Installation and Setup
@@ -89,12 +104,14 @@
    npm install
    npm run dev
     ```
+
 ## Default Usage and Users
+
 Go to http://localhost:5173/
 List of registered users (you can registered some as well)
 
-| Username          | Password | Role  |
-|-------------------|----------|-------|
-| admin@test.com    | test     | Admin |
-| staff@test.com    | test     | Staff |
-| user@test.com     | test     | User  |
+| Username       | Password | Role  |
+|----------------|----------|-------|
+| admin@test.com | test     | Admin |
+| staff@test.com | test     | Staff |
+| user@test.com  | test     | User  |
