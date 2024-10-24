@@ -1,12 +1,13 @@
 package com.springportfolio.core;
 
+import com.springportfolio.core.entity.climbing.ClimbingLocation;
 import com.springportfolio.core.entity.climbing.ClimbingLocationMarker;
 import com.springportfolio.core.entity.security.Privilege;
 import com.springportfolio.core.entity.security.Role;
 import com.springportfolio.core.entity.user.Profile;
 import com.springportfolio.core.entity.user.User;
 import com.springportfolio.core.enums.ClimbingType;
-import com.springportfolio.core.repository.climbing.ClimbingLocationMarkerRepositoryInterface;
+import com.springportfolio.core.repository.climbing.ClimbingLocationRepositoryInterface;
 import com.springportfolio.core.repository.security.PrivilegeRepositoryInterface;
 import com.springportfolio.core.repository.security.RoleRepositoryInterface;
 import com.springportfolio.core.repository.user.UserRepositoryInterface;
@@ -26,21 +27,21 @@ class Initializer implements CommandLineRunner {
     private final PrivilegeRepositoryInterface privilegeRepository;
     private final RoleRepositoryInterface roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ClimbingLocationMarkerRepositoryInterface climbingLocationMarkerRepository;
+    private final ClimbingLocationRepositoryInterface climbingLocationRepositoryInterface;
 
     public Initializer(
             UserRepositoryInterface userRepository,
             PrivilegeRepositoryInterface privilegeRepository,
             RoleRepositoryInterface roleRepository,
             PasswordEncoder passwordEncoder,
-            ClimbingLocationMarkerRepositoryInterface
-                    climbingLocationMarkerRepository
+            ClimbingLocationRepositoryInterface
+                    climbingLocationRepositoryInterface
     ) {
         this.userRepository = userRepository;
         this.privilegeRepository = privilegeRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.climbingLocationMarkerRepository = climbingLocationMarkerRepository;
+        this.climbingLocationRepositoryInterface = climbingLocationRepositoryInterface;
     }
 
     @Override
@@ -126,7 +127,14 @@ class Initializer implements CommandLineRunner {
                 .point(createRandomPoints())
                 .polygon(createRandomPolygon())
                 .build();
-        climbingLocationMarkerRepository.save(climbingLocationMarker);
+        ClimbingLocation climbingLocation = ClimbingLocation
+                .builder()
+                .validated(false)
+                .description(faker.lorem().paragraph(1))
+                .name(faker.lorem().word())
+                .climbingLocationMarkers(List.of(climbingLocationMarker))
+                .build();
+        climbingLocationRepositoryInterface.save(climbingLocation);
     }
 
     public Point createRandomPoints() {

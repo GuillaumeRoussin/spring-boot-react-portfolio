@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,4 +30,12 @@ public class ClimbingLocation {
 
     @Column(nullable = false)
     private String description;
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "climbing_location_id", nullable = false)
+    private List<ClimbingLocationMarker> climbingLocationMarkers = new ArrayList<>();
 }

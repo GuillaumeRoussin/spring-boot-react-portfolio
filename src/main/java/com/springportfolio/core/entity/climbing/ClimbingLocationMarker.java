@@ -31,5 +31,4 @@ public class ClimbingLocationMarker {
 
     private Point point;
     private Polygon polygon;
-
 }
