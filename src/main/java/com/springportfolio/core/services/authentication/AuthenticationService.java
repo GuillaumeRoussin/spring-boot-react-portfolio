@@ -50,7 +50,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(input.getPassword()))
                 .build();
 
-        return DefaultUserResponse.toDefaultUserResponse(userRepository.save(user));
+        return DefaultUserResponse.fromEntity(userRepository.save(user));
     }
 
     public UserDetails authenticate(LoginUserDto input) {

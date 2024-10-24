@@ -35,7 +35,7 @@ public class UserController {
 
         UserDetails currentUserDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userRepository.findByEmail(currentUserDetails.getUsername()).orElseThrow();
-        return ResponseEntity.ok(MeUserResponse.toMeUserResponse(currentUser, currentUserDetails.getAuthorities()));
+        return ResponseEntity.ok(MeUserResponse.fromEntity(currentUser, currentUserDetails.getAuthorities()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -21,7 +21,7 @@ public class MeUserResponse {
     private boolean profile;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static MeUserResponse toMeUserResponse(User user, Collection<? extends GrantedAuthority> authorities) {
+    public static MeUserResponse fromEntity(User user, Collection<? extends GrantedAuthority> authorities) {
         return MeUserResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

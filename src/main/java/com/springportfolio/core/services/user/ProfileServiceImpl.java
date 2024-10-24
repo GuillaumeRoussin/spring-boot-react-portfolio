@@ -41,7 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
             profileRepository.save(profile);
             user.setProfile(profile);
             userRepository.save(user);
-            return ProfileResponse.toProfileResponse(profile);
+            return ProfileResponse.fromEntity(profile);
         }
     }
 
@@ -57,7 +57,7 @@ public class ProfileServiceImpl implements ProfileService {
             profile.setPreferredClimbingType(profileDto.getPreferredClimbingType());
             profile.setBirthDate(profileDto.getBirthDate());
             profileRepository.save(profile);
-            return ProfileResponse.toProfileResponse(profile);
+            return ProfileResponse.fromEntity(profile);
         }
     }
 
@@ -66,11 +66,11 @@ public class ProfileServiceImpl implements ProfileService {
         if (user.getProfile() == null) {
             throw new BadRequestException("Profile doesn't exists");
         }
-        return ProfileResponse.toProfileResponse(user.getProfile());
+        return ProfileResponse.fromEntity(user.getProfile());
     }
 
     public Page<ProfileResponse> getAll(Pageable pageable) {
         Page<Profile> profiles = profileRepository.findAll(pageable);
-        return profiles.map(ProfileResponse::toProfileResponse);
+        return profiles.map(ProfileResponse::fromEntity);
     }
 }

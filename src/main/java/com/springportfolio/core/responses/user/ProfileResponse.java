@@ -18,7 +18,7 @@ public class ProfileResponse {
     private ClimbingType preferredClimbingType;
     private LocalDate birthDate;
 
-    public static ProfileResponse toProfileResponse(Profile profile) {
+    public static ProfileResponse fromEntity(Profile profile) {
         return ProfileResponse.builder()
                 .id(profile.getId())
                 .description(profile.getDescription())

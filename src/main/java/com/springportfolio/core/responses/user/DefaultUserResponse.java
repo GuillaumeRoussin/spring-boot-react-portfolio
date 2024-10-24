@@ -19,7 +19,7 @@ public class DefaultUserResponse {
     private boolean profile;
 
 
-    public static DefaultUserResponse toDefaultUserResponse(User user) {
+    public static DefaultUserResponse fromEntity(User user) {
         return DefaultUserResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

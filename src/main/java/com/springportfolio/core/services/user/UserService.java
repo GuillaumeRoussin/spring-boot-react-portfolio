@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
         List<DefaultUserResponse> users = new ArrayList<>();
 
         userRepository.findAll().forEach(user ->
-                users.add(DefaultUserResponse.toDefaultUserResponse(user))
+                users.add(DefaultUserResponse.fromEntity(user))
         );
 
         return users;
